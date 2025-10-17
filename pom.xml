@@ -12,7 +12,7 @@
 	<artifactId>api-gateway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>api-gateway</name>
-	<description>Demo project for Spring Boot</description>
+    <description>API Gateway responsável pelo roteamento, autenticação (JWT/OAuth2), políticas de segurança e documentação (OpenAPI) do sistema de gerenciamento de encomendas.</description>
 	<url/>
 	<licenses>
 		<license/>
