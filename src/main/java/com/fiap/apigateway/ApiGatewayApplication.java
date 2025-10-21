@@ -1,9 +1,9 @@
-package com.alex.api_gateway;
+package com.fiap.apigateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.fiap.apigateway")
 public class ApiGatewayApplication {
 
 	public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package com.alex.api_gateway;
+package com.fiap.apigateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
