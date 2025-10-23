@@ -1,0 +1,19 @@
+# Maven
+target
+.settings
+.mvn
+.vscode
+
+# IDE/editor
+.idea
+*.iml
+
+# Git
+.git
+.gitignore
+
+# Logs
+*.log
+
+# Outros
+Dockerfile
