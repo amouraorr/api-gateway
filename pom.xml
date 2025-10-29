@@ -20,12 +20,23 @@
 
     <properties>
         <java.version>17</java.version>
-        <spring-cloud.version>2024.0.2</spring-cloud.version>
-        <springdoc.version>2.1.0</springdoc.version>
-        <mapstruct.version>1.5.5.Final</mapstruct.version>
-        <logstash.encoder.version>7.4</logstash.encoder.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-boot.version>3.4.6</spring-boot.version>
+        <springdoc.version>2.5.0</springdoc.version>
+        <logstash.encoder.version>7.4</logstash.encoder.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Core -->
@@ -90,6 +101,22 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- H2 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Postgres -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+
     </dependencies>
 
     <build>

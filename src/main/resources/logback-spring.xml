@@ -1,77 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true" scanPeriod="30 seconds">
+<configuration scan="false">
 
-    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <!-- Propriedades padrão -->
+    <property name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5p --- %c{1} : %m%n"/>
+    <property name="CONSOLE_LOG_CHARSET" value="UTF-8"/>
+    <property name="LOG_LEVEL" value="${LOG_LEVEL:-INFO}"/>
 
-    <springProperty scope="context" name="appName" source="spring.application.name"/>
+    <!-- Mostrar status do Logback na inicialização (útil para debug) -->
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
 
-    <appender name="CONSOLE_JSON" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-            <providers>
-                <timestamp>
-                    <timeZone>UTC</timeZone>
-                </timestamp>
-                <loggerName/>
-                <threadName/>
-                <logLevel/>
-                <message/>
-                <stackTrace/>
-                <mdc/>
-                <context>
-                    <keyValuePair>
-                        <key>app</key>
-                        <value>${springAppName}</value>
-                    </keyValuePair>
-                </context>
-            </providers>
+    <!-- Appender para saída padrão (stdout) - recomendado para Docker -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>${CONSOLE_LOG_CHARSET}</charset>
         </encoder>
     </appender>
 
-    <appender name="FILE_JSON" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/api-gateway.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/api-gateway.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
-            <maxHistory>14</maxHistory>
-            <totalSizeCap>1GB</totalSizeCap>
-        </rollingPolicy>
-        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-            <providers>
-                <timestamp>
-                    <timeZone>UTC</timeZone>
-                </timestamp>
-                <loggerName/>
-                <threadName/>
-                <logLevel/>
-                <message/>
-                <stackTrace/>
-                <mdc/>
-                <context>
-                    <keyValuePair>
-                        <key>app</key>
-                        <value>${springAppName}</value>
-                    </keyValuePair>
-                </context>
-            </providers>
-        </encoder>
-    </appender>
-
-    <logger name="org.springframework" level="INFO"/>
-    <logger name="org.hibernate" level="WARN"/>
-    <logger name="org.apache" level="INFO"/>
-    <logger name="com.fiap" level="DEBUG"/>
-
-    <root level="INFO">
-        <appender-ref ref="CONSOLE_JSON"/>
-        <appender-ref ref="FILE_JSON"/>
+    <!-- Root logger -->
+    <root level="${LOG_LEVEL}">
+        <appender-ref ref="CONSOLE"/>
     </root>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <customFields>{"app":"${appName:-api-gateway}"}</customFields>
-        </encoder>
-    </appender>
-
-    <root level="INFO">
-        <appender-ref ref="STDOUT" />
-    </root>
 </configuration>
