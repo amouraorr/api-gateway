@@ -1,0 +1,8 @@
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+security:
+  jwt:
+    secret: ${SECURITY_JWT_SECRET:}
