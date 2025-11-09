@@ -63,7 +63,7 @@ public class ApiGatewayLoggingFilter implements GlobalFilter, Ordered {
     }
 
     private String maskSensitiveHeaders(String headers) {
-       
+
         return headers.replaceAll("(?i)authorization=[^,}]+", "authorization=***")
                       .replaceAll("(?i)cookie=[^,}]+", "cookie=***");
     }
