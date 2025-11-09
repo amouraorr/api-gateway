@@ -1,39 +1,20 @@
-# Configurações principais da aplicação api-gateway
 spring:
-  application:
-    name: api-gateway
-
-  # Data source e JPA (defaults para desenvolvimento / testes)
-  datasource:
-    url: jdbc:h2:mem:notifications;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-
-  # Ativação de profile (ativar algo para profile 'docker' com application-docker.yml)
-  config:
-    activate:
-      on-profile: docker
-
-# SpringDoc / Swagger
-springdoc:
-  api-docs:
-    enabled: true
-  swagger-ui:
-    enabled: true
-    # path: /swagger-ui.html   # descomente se customizar
-
-# Segurança / JWT
-# Usa a variável de ambiente SECURITY_JWT_SECRET quando disponível,
-# caso contrário usa 'test-secret' como fallback (evita falha de inicialização).
-security:
-  jwt:
-    secret: ${SECURITY_JWT_SECRET:test-secret}
-    expiration: 3600000
+  cloud:
+    gateway:
+      routes:
+        - id: user-service-internal
+          uri: ${services.user.uri}
+          predicates:
+            - Path=/api/internal/users/**
+        - id: user-service
+          uri: ${services.user.uri}
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - StripPrefix=1
+        - id: parcel-service
+          uri: ${services.parcel.uri}
+          predicates:
+            - Path=/api/parcels/**
+          filters:
+            - StripPrefix=1
