@@ -1,4 +1,7 @@
 spring:
+  application:
+    name: api-gateway
+
   cloud:
     gateway:
       routes:
@@ -18,3 +21,29 @@ spring:
             - Path=/api/parcels/**
           filters:
             - StripPrefix=1
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+services:
+  user:
+    uri: http://user-service:8080
+  parcel:
+    uri: http://parcel-service:8080
+
+server:
+  port: 8080
+
+security:
+  jwt:
+    secret: ${SECURITY_JWT_SECRET:test-secret}
+
+# Log levels úteis para desenvolvimento local
+logging:
+  level:
+    root: INFO
+    com.fiap.apigateway: INFO
+    com.fiap.apigateway.infrastructure.logging: DEBUG
