@@ -1,3 +1,4 @@
+# API Gateway
 spring:
   application:
     name: api-gateway
@@ -19,8 +20,6 @@ spring:
           uri: ${services.parcel.uri}
           predicates:
             - Path=/api/parcels/**
-          filters:
-            - StripPrefix=1
 
 springdoc:
   api-docs:
@@ -30,9 +29,9 @@ springdoc:
 
 services:
   user:
-    uri: http://user-service:8080
+    uri: http://localhost:8081
   parcel:
-    uri: http://parcel-service:8080
+    uri: http://localhost:8082
 
 server:
   port: 8080
@@ -41,7 +40,6 @@ security:
   jwt:
     secret: ${SECURITY_JWT_SECRET:test-secret}
 
-# Log levels úteis para desenvolvimento local
 logging:
   level:
     root: INFO
