@@ -9,13 +9,17 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
-import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
-import org.springframework.security.oauth2.jwt.*;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtException;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder;
+import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.SecretKey;
@@ -26,7 +30,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Arrays;
 
+/**
+ * Security Config do API Gateway para profile 'docker' (reativo).
+ *
+ * Adiciona logs com fingerprint para facilitar debug de tokens entre serviços.
+ */
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
@@ -82,7 +92,7 @@ public class SecurityConfigDocker {
     }
 
     /**
-     * Reactive JwtDecoder HS256 (Nimbus) usando o mesmo segredo; necessário para WebFlux/Security reativo.
+     * Reactive JwtDecoder HS256 para WebFlux/Security reativo.
      */
     @Bean
     public ReactiveJwtDecoder reactiveJwtDecoder(@Value("${security.jwt.secret:${jwt.secret:}}") String jwtSecret) {
@@ -116,15 +126,15 @@ public class SecurityConfigDocker {
     }
 
     /**
-     * Resolve bytes para a chave HMAC:
-     * - tenta decodificar Base64; se resultar em >= 32 bytes, usa esse valor.
-     * - caso contrário, usa os bytes UTF-8 do texto; se tiver >= 32 bytes, usa diretamente.
-     * - caso contrário, aplica SHA-256 no texto para obter 32 bytes.
-     *
-     * Implementa a mesma estratégia do JwtTokenProvider do user-service para compatibilidade.
+     * Resolve bytes para a chave HMAC (mesma lógica do UserService) e adiciona logs/fingerprint.
      */
     private SecretKey buildSecretKey(String secret) {
         byte[] keyBytes = resolveKeyBytes(secret);
+
+        // fingerprint para comparação (SHA-256 sobre os bytes)
+        String fp = computeFingerprintBase64(keyBytes);
+        logger.info("ApiGateway: building SecretKey from provided secret. keyBytes.length={} fingerprint(SHA256-base64)={}", keyBytes.length, fp);
+
         return new SecretKeySpec(keyBytes, "HmacSHA256");
     }
 
@@ -133,10 +143,10 @@ public class SecurityConfigDocker {
         try {
             byte[] decoded = Base64.getDecoder().decode(secret);
             if (decoded.length >= 32) {
-                logger.info("SecretKey configurada a partir de Base64 ({} bytes).", decoded.length);
+                logger.info("ApiGateway: secret provided as Base64 -> using decoded bytes ({} bytes).", decoded.length);
                 return decoded;
             } else {
-                logger.warn("Base64 fornecido resultou em {} bytes (<32). Será usado fallback/derivação.", decoded.length);
+                logger.warn("ApiGateway: provided Base64 decoded to {} bytes (<32). Will fallback/derive.", decoded.length);
             }
         } catch (IllegalArgumentException ignored) {
             // não era Base64 -> prosseguir
@@ -145,7 +155,7 @@ public class SecurityConfigDocker {
         // usa bytes UTF-8
         byte[] raw = secret.getBytes(StandardCharsets.UTF_8);
         if (raw.length >= 32) {
-            logger.info("SecretKey configurada a partir de texto UTF-8 ({} bytes).", raw.length);
+            logger.info("ApiGateway: using UTF-8 bytes of secret ({} bytes).", raw.length);
             return raw;
         }
 
@@ -153,10 +163,20 @@ public class SecurityConfigDocker {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] derived = md.digest(raw); // 32 bytes
-            logger.warn("Secret fornecido curto; derivando 32 bytes via SHA-256 para compatibilidade (não use em produção).");
+            logger.warn("ApiGateway: secret curto; deriving 32 bytes via SHA-256 for compatibility (NOT for production).");
             return derived;
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("SHA-256 algorithm not available to derive JWT key bytes", e);
+        }
+    }
+
+    private String computeFingerprintBase64(byte[] bytes) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] digest = md.digest(bytes);
+            return Base64.getEncoder().encodeToString(digest);
+        } catch (NoSuchAlgorithmException e) {
+            return Integer.toHexString(Arrays.hashCode(bytes));
         }
     }
 }
