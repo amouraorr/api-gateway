@@ -1,4 +1,4 @@
-# API Gateway
+# API Gateway - configurações padrão (desenvolvimento/local)
 spring:
   application:
     name: api-gateway
@@ -6,20 +6,35 @@ spring:
   cloud:
     gateway:
       routes:
+        # ROTA INTERNA: encaminha qualquer /api/internal/** para user-service sem remover o prefixo
         - id: user-service-internal
           uri: ${services.user.uri}
           predicates:
-            - Path=/api/internal/users/**
+            - Path=/api/internal/**
+
+        # ROTA PARA AUTH: encaminha /api/auth/** para auth-service, removendo /api (se auth-service expõe /auth/**)
+        - id: auth-service
+          uri: ${services.auth.uri}
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=1
+
+        # ROTA PÚBLICA DE USUÁRIOS: encaminha /api/users/** para user-service removendo /api
         - id: user-service
           uri: ${services.user.uri}
           predicates:
             - Path=/api/users/**
           filters:
             - StripPrefix=1
+
+        # ROTA DE ENCOMENDAS: encaminha /api/parcels/** para parcel-service removendo /api
         - id: parcel-service
           uri: ${services.parcel.uri}
           predicates:
             - Path=/api/parcels/**
+          filters:
+            - StripPrefix=1
 
 springdoc:
   api-docs:
@@ -27,11 +42,14 @@ springdoc:
   swagger-ui:
     enabled: true
 
+# Serviços — valores padrão (modo desenvolvimento/local)
 services:
   user:
     uri: http://localhost:8081
   parcel:
     uri: http://localhost:8082
+  auth:
+    uri: http://localhost:8085
 
 server:
   port: 8080
@@ -45,3 +63,19 @@ logging:
     root: INFO
     com.fiap.apigateway: INFO
     com.fiap.apigateway.infrastructure.logging: DEBUG
+
+# --- Profile Docker: quando executado no Compose
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+# Serviços no profile 'docker' para apontar aos nomes/ports dos containers
+services:
+  user:
+    uri: http://user-service:8080
+  parcel:
+    uri: http://parcel-service:8080
+  auth:
+    uri: http://auth-service:8080
