@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                              https://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+    <!-- Mirror: uso direto do repo1 para reduzir redirecionamentos e problemas intermitentes -->
+    <mirrors>
+        <mirror>
+            <id>central-mirror</id>
+            <name>Maven Central Mirror</name>
+            <url>https://repo1.maven.org/maven2</url>
+            <mirrorOf>central</mirrorOf>
+        </mirror>
+    </mirrors>
+
+    <!-- Desativa modo interativo (bom para CI / Docker) -->
+    <interactiveMode>false</interactiveMode>
+
+    <!-- Opcional: configurações de proxy/servers comentadas para uso se necessário
+    <proxies> ... </proxies>
+    <servers> ... </servers>
+    -->
+</settings>

@@ -1,0 +1,732 @@
+{
+	"info": {
+		"_postman_id": "9539b082-f93b-4b80-9a07-f43de87ad7ff",
+		"name": "Sistemas de encomendas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18620225"
+	},
+	"item": [
+		{
+			"name": "1º MORADOR CADASTRO",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "fiap2025",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "fiap",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Alexsandro\",\r\n    \"password\": \"secret123\",\r\n    \"phone\": \"99999\",\r\n    \"apartment\": \"101\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/internal/users/morador",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"internal",
+						"users",
+						"morador"
+					]
+				},
+				"description": "Generated from cURL:   curl -v -X POST http://localhost:8080/api/internal/users/morador \\\r\n    -H \"Content-Type: application/json\" \\\r\n    -d '{\"username\":\"maria\",\"password\":\"senha123\",\"phone\":\"99999\",\"apartment\":\"101\"}'"
+			},
+			"response": []
+		},
+		{
+			"name": "2º - PORTEIRO CADASTRO",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n    \"username\": \"JoaoPorteiro\",\r\n    \"password\": \"secret123\",\r\n    \"phone\": \"99999\",\r\n    \"apartment\": \"portaria\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/internal/users/porteiro",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"internal",
+						"users",
+						"porteiro"
+					]
+				},
+				"description": "Generated from cURL:   curl -v -X POST http://localhost:8080/api/internal/users/porteiro \\\r\n    -H \"Content-Type: application/json\" \\\r\n    -d '{\"username\":\"joao\",\"password\":\"senha123\",\"phone\":\"98888\"}'\r\n"
+			},
+			"response": []
+		},
+		{
+			"name": "3º - CADASTRA ENCOMENDA",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "payload",
+							"value": "{\r\n  \"token\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb2FvUG9ydGVpcm8iLCJyb2xlIjoiUE9SVEVJUk8iLCJpYXQiOjE3NjI3ODg5MzMsImV4cCI6MTc2Mjc5MjUzM30._IZhk7f23EWWdpLCzceXF37IuS7N3iiT9ZzipasmEqw\",\r\n  \"tokenType\": \"Bearer\"\r\n}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "HS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"residentName\": \"Alexsandro\",\r\n\"apartment\": \"101\",\r\n\"description\": \"Pacote Amazon - livro!\",\r\n\"contact\": \"alex@example.com\",\r\n\"channel\": \"EMAIL\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/parcels",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"parcels"
+					]
+				},
+				"description": "Generated from cURL:   curl -v -X POST http://localhost:8080/api/parcels \\\r\n    -H \"Content-Type: application/json\" \\\r\n    -d '{\"residentName\":\"Maria\",\"apartment\":\"101\",\"description\":\"Encomenda\"}'"
+			},
+			"response": []
+		},
+		{
+			"name": "4º - CONFIRMAÇÃO RECEBIMENTO",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/api/notification/\tcf5c813a-1a48-4d0b-81c1-70076cf06ad5/ack",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"notification",
+						"\tcf5c813a-1a48-4d0b-81c1-70076cf06ad5",
+						"ack"
+					]
+				},
+				"description": "Generated from cURL:   curl -v -X POST http://localhost:8080/api/parcels \\\r\n    -H \"Content-Type: application/json\" \\\r\n    -d '{\"residentName\":\"Maria\",\"apartment\":\"101\",\"description\":\"Encomenda\"}'"
+			},
+			"response": []
+		},
+		{
+			"name": "5º - ENCOMENDA RETIRADA",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/parcels/1/pickup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"parcels",
+						"1",
+						"pickup"
+					]
+				},
+				"description": "Generated from cURL:   curl -v -X POST http://localhost:8080/api/parcels \\\r\n    -H \"Content-Type: application/json\" \\\r\n    -d '{\"residentName\":\"Maria\",\"apartment\":\"101\",\"description\":\"Encomenda\"}'"
+			},
+			"response": []
+		},
+		{
+			"name": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Alexsandro\",\r\n    \"password\": \"secret123\",\r\n    \"role\": \"PORTARIA\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8085/api/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"auth"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8085/api/auth -H \"Content-Type: application/json\" -d '{\"username\":\"Alexsandro\",\"password\":\"secret123\"}'"
+			},
+			"response": []
+		},
+		{
+			"name": "TOKEN cria morador",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Alexsandro\",\r\n    \"password\": \"pass123\",\r\n    \"phone\": \"11999990000\",\r\n    \"apartment\": \"101\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8085/api/internal/users/morador",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"internal",
+						"users",
+						"morador"
+					]
+				},
+				"description": "Generated from cURL: curl -v -X POST http://localhost:8081/api/internal/users/morador \\\r\n    -H \"Content-Type: application/json\" \\\r\n    -d '{\"username\":\"morador1\",\"password\":\"pass123\",\"phone\":\"11999990000\",\"apartment\":\"101\"}'"
+			},
+			"response": []
+		},
+		{
+			"name": "TOKEN cria porteiro",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"JoaoPorteiro\",\r\n    \"password\": \"porta123\",\r\n    \"phone\": \"11988880000\",\r\n    \"apartment\": \"portaria\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8085/api/internal/users/porteiro",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"internal",
+						"users",
+						"porteiro"
+					]
+				},
+				"description": "Generated from cURL: curl -v -X POST http://localhost:8081/api/internal/users/porteiro \\\r\n    -H \"Content-Type: application/json\" \\\r\n    -d '{\"username\":\"porteiro1\",\"password\":\"porta123\",\"phone\":\"11988880000\",\"apartment\":null}'"
+			},
+			"response": []
+		},
+		{
+			"name": "TOKEN cria login porteiro",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"JoaoPorteiro\",\r\n    \"password\": \"porta123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8085/api/internal/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"internal",
+						"auth",
+						"login"
+					]
+				},
+				"description": "Generated from cURL:   curl -v -X POST http://localhost:8081/api/internal/auth/login \\\r\n    -H \"Content-Type: application/json\" \\\r\n    -d '{\"username\":\"porteiro1\",\"password\":\"porta123\"}'\r\n  -> resposta: {\"token\":\"<JWT_TOKEN_HERE>\",\"tokenType\":\"Bearer\"}"
+			},
+			"response": []
+		},
+		{
+			"name": "TOKEN cria encomenda",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "secret",
+							"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb2FvUG9ydGVpcm8iLCJyb2xlIjoiUE9SVEVJUk8iLCJpYXQiOjE3NjI5NTg4OTgsImV4cCI6MTc2Mjk2NjA5OCwicm9sZXMiOlsiUE9SVEVJUk8iXX0.pL4lf0GTtqe6x0bipAoz50TqnXvCR5xrGRegPH7c_W0",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{\"token\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb2FvUG9ydGVpcm8iLCJyb2xlIjoiUE9SVEVJUk8iLCJpYXQiOjE3NjI4OTk3MzksImV4cCI6MTc2MjkwNjkzOSwicm9sZXMiOlsiUE9SVEVJUk8iXX0.vjHj5-b4U9au097UcQqW1I6EXFd-LJbcuSeiwCc9Alg\",\r\n\"tokenType\": \"Bearer\"}",
+							"type": "string"
+						},
+						{
+							"key": "payload",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "HS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb2FvUG9ydGVpcm8iLCJyb2xlIjoiUE9SVEVJUk8iLCJpYXQiOjE3NjI5NTg4OTgsImV4cCI6MTc2Mjk2NjA5OCwicm9sZXMiOlsiUE9SVEVJUk8iXX0.pL4lf0GTtqe6x0bipAoz50TqnXvCR5xrGRegPH7c_W0"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"residentName\": \"Alexsandro\",\r\n\"apartment\": \"101\",\r\n\"description\": \"Pacote Amazon - livro!\",\r\n\"contact\": \"alex@example.com\",\r\n\"channel\": \"EMAIL\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8085/api/parcels",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"parcels"
+					]
+				},
+				"description": "Generated from cURL:   curl -v -X POST http://localhost:8080/api/parcels \\\r\n    -H \"Content-Type: application/json\" \\\r\n    -H \"Authorization: Bearer <TOKEN_DO_PORTEIRO>\" \\\r\n    -d '{\"recipientUsername\":\"morador1\",\"apartment\":\"101\",\"description\":\"Pacote de teste\"}'"
+			},
+			"response": []
+		},
+		{
+			"name": "TOKEN cria login morador",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Alexsandro\",\r\n    \"password\": \"pass123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8085/api/internal/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"internal",
+						"auth",
+						"login"
+					]
+				},
+				"description": "Generated from cURL:   curl -v -X POST http://localhost:8081/api/internal/auth/login \\\r\n    -H \"Content-Type: application/json\" \\\r\n    -d '{\"username\":\"morador1\",\"password\":\"pass123\"}'"
+			},
+			"response": []
+		},
+		{
+			"name": "TOKEN confirmação recebimento",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "secret",
+							"value": "\"token\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb2FvUG9ydGVpcm8iLCJyb2xlIjoiUE9SVEVJUk8iLCJpYXQiOjE3NjI4NzM3ODQsImV4cCI6MTc2Mjg4MDk4NCwicm9sZXMiOlsiUE9SVEVJUk8iXX0.8w6OeGd0e7-LeQtx8zAYBj39IlyCz9NGbEEwiAyq8nI\",\n\"tokenType\": \"Bearer\"",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "HS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "payload",
+							"value": "{}",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer <TOKEN_DO_MORADOR>"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8085/api/notification/b960d29f-66d0-4693-b958-b4e3b24fdcaa/ack",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"notification",
+						"b960d29f-66d0-4693-b958-b4e3b24fdcaa",
+						"ack"
+					]
+				},
+				"description": "Generated from cURL:   curl -v -X POST http://localhost:8080/api/parcels/<PARCEL_ID>/confirm \\\r\n    -H \"Authorization: Bearer <TOKEN_DO_MORADOR>\" \\\r\n    -H \"Content-Type: application/json\" \\\r\n    -d '{\"confirmed\":true}'"
+			},
+			"response": []
+		},
+		{
+			"name": "TOKEN encomenda retirada",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "secret",
+							"value": "\"token\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBbGV4c2FuZHJvIiwicm9sZSI6Ik1PUkFET1IiLCJpYXQiOjE3NjI4NzQ5NTksImV4cCI6MTc2Mjg4MjE1OSwicm9sZXMiOlsiTU9SQURPUiJdfQ.LjDxGeWSHo6I-WGs-Q4dBXFs1r3tzAwGi5l9tVcEdQk\",\n\"tokenType\": \"Bearer\"",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "HS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "payload",
+							"value": "{}",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer <TOKEN_DO_PORTEIRO>"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8085/api/parcels/1/pickup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"parcels",
+						"1",
+						"pickup"
+					]
+				},
+				"description": "Generated from cURL:   curl -v -X POST http://localhost:8080/api/parcels/<PARCEL_ID>/pickup \\\r\n    -H \"Authorization: Bearer <TOKEN_DO_PORTEIRO>\""
+			},
+			"response": []
+		},
+		{
+			"name": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8085api/parcels",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085api",
+					"path": [
+						"parcels"
+					]
+				},
+				"description": "Generated from cURL: curl -v -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6...\" http://localhost:8080/api/parcels/123"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
